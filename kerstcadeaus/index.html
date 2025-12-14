@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerstcadeaus</title>
+    <style>
+        /* =====================================================
+           MOBILE-FIRST RESPONSIVE CSS
+           Geoptimaliseerd voor Samsung Galaxy Tab S9+ en tablets
+           Touch targets: minimaal 44x44px
+           Basis font-size: 1rem = 16px
+           ===================================================== */
+        
+        :root {
+            /* CSS Custom Properties voor schaalbaarheid */
+            --wheel-size: 75vw;
+            --center-size: 18%;
+            --number-size: 8%;
+            --nav-height: 3.5rem;
+            --color-red: #c41e3a;
+            --color-green: #1a472a;
+            --color-gold: #ffd700;
+            /* Vaste hoogtes voor layout - NOOIT VERANDEREN */
+            --pointer-height: 5rem; /* vaste pijl hoogte */
+            --button-height: 5rem; /* vaste knop hoogte */
+            --header-height: 5rem; /* header + padding */
+            --element-gap: 0.75rem; /* vaste ruimte tussen elementen */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px; /* Basis voor rem eenheden */
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(to bottom, #0a1628 0%, #1a2642 50%, #0d1b2a 100%);
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+            min-height: 100dvh; /* Dynamic viewport voor mobiel */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: hidden; /* geen verticale scroll overal */
+            position: relative;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           NAVIGATION - Touch-friendly (min 44px tap targets)
+           ===================================================== */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 71, 42, 0.95);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            backdrop-filter: blur(5px);
+            min-height: var(--nav-height);
+            align-items: center;
+        }
+
+        .nav-header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            /* Touch target: minimaal 44x44px */
+            min-height: 2.75rem;
+            min-width: 2.75rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Geen hover-afhankelijkheid: active state voor touch */
+            transition: background 0.2s ease;
+        }
+
+        .nav-header a:active,
+        .nav-header a.active {
+            background: var(--color-red);
+        }
+
+        /* Hover alleen voor apparaten met muis */
+        @media (hover: hover) and (pointer: fine) {
+            .nav-header a:hover {
+                background: var(--color-red);
+            }
+        }
+
+        /* =====================================================
+           DECORATIEVE ELEMENTEN (sneeuw, sterren)
+           ===================================================== */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: #fff;
+            font-size: 1rem;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        /* Overvliegende kerstman (zelfde stijl als menupagina) */
+        .santa {
+            position: fixed;
+            top: 10%;
+            left: -200px;
+            width: 180px;
+            height: auto;
+            z-index: 1000;
+            /* Vlieg horizontaal + zacht op/neer bouncen */
+            animation: flySanta 12s ease-in-out 0s infinite, santaBop 1.8s ease-in-out 0s infinite, pauseSanta 45s step-end infinite;
+            pointer-events: auto; /* Klikken ingeschakeld */
+            cursor: pointer;
+        }
+
+        /* Zachte op/ neer beweging */
+        @keyframes santaBop {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes pauseSanta {
+            0%, 26.67% {
+                opacity: 1;
+            }
+            26.68%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes flySanta {
+            0% {
+                left: -200px;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+            25% {
+                left: 25vw;
+                transform: translateY(-10px) scale(1.05) rotate(-2deg);
+            }
+            50% {
+                left: 55vw;
+                transform: translateY(8px) scale(1.05) rotate(2deg);
+            }
+            75% {
+                left: 80vw;
+                transform: translateY(-6px) scale(1.03) rotate(-1deg);
+            }
+            100% {
+                left: 110vw;
+                transform: translateY(0) scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        .star {
+            position: fixed;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star.twinkle {
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        /* =====================================================
+           MAIN CONTAINER - Mobile First
+           ===================================================== */
+        .container {
+            position: relative;
+            margin-top: var(--nav-height);
+            height: calc(100vh - var(--nav-height)); /* vaste verticale grootte */
+            height: calc(100dvh - var(--nav-height)); /* dynamic viewport variant */
+            width: 100%;
+            max-width: 100%;
+            background: #fff;
+            padding: 1rem;
+            padding-bottom: 4.5rem; /* ruimte reserveren voor knoppen onderaan */
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            overflow: hidden; /* nooit scrollbaar binnen wit vlak */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 0.75rem;
+            border-bottom: 0.1875rem solid var(--color-red);
+            padding-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        h1 {
+            font-size: clamp(1.25rem, 4vw, 2.5rem);
+            color: var(--color-red);
+            margin-bottom: 0.25rem;
+            font-weight: normal;
+            letter-spacing: 0.125rem;
+        }
+
+        .subtitle {
+            font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+            color: var(--color-green);
+            font-style: italic;
+        }
+
+        .content {
+            flex: 1;
+            display: grid;
+            /* 3 rijen: pijl (vast) | rad (flex) | knop (vast) */
+            grid-template-rows: var(--pointer-height) 1fr var(--button-height);
+            justify-items: center;
+            align-items: center;
+            /* Vaste gap tussen ALLE elementen */
+            gap: var(--element-gap);
+            padding: var(--element-gap) 0;
+            overflow: hidden;
+            /* Voorkom dat kinderen buiten container groeien */
+            contain: layout;
+        }
+
+        .content p {
+            font-size: 1rem;
+            color: var(--color-green);
+            text-align: center;
+            margin: 0.25rem 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.5rem;
+            /* Touch target */
+            min-height: 2.75rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-red);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.2s ease;
+        }
+
+        .back-link:active {
+            background: var(--color-green);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .back-link:hover {
+                background: var(--color-green);
+            }
+        }
+
+        /* =====================================================
+           SPINNER WHEEL - Responsive met vw/vh
+           ===================================================== */
+        .spinner-container {
+            /* Rij 2: flex ruimte, rad schaalt mee */
+            grid-row: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            /* Voorkom overflow */
+            overflow: hidden;
+            position: relative;
+            /* Container query voor wheel sizing */
+            container-type: size;
+            container-name: wheel-container;
+        }
+
+        .spinner-wheel {
+            position: relative;
+            /* Rad is ALTIJD vierkant en past in beschikbare ruimte */
+            /* Neem de kleinste van container breedte of hoogte */
+            --wheel-size: min(100cqw, 100cqh);
+            width: var(--wheel-size);
+            height: var(--wheel-size);
+            /* Fallback voor browsers zonder container queries */
+            max-width: 100%;
+            max-height: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 0deg,
+                var(--color-red) 0deg 36deg,
+                var(--color-green) 36deg 72deg,
+                var(--color-red) 72deg 108deg,
+                var(--color-green) 108deg 144deg,
+                var(--color-red) 144deg 180deg,
+                var(--color-green) 180deg 216deg,
+                var(--color-red) 216deg 252deg,
+                var(--color-green) 252deg 288deg,
+                var(--color-red) 288deg 324deg,
+                var(--color-green) 324deg 360deg
+            );
+            box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.3), inset 0 0 1.25rem rgba(255, 255, 255, 0.2);
+            border: 0.3125rem solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+            /* Touch feedback */
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .spinner-wheel:active:not(.spinning) {
+            transform: scale(0.98);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .spinner-wheel:hover:not(.spinning) {
+                transform: scale(1.02);
+            }
+        }
+
+        .spinner-wheel.spinning {
+            animation: spin var(--spin-time, 7s) cubic-bezier(0.15, 0.6, 0.2, 1) 1 forwards;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(var(--spin-deg, 1800deg)); }
+        }
+
+        .spinner-center {
+            position: absolute;
+            /* Schaalt mee met het rad (18% van wheel grootte) */
+            width: var(--center-size);
+            height: var(--center-size);
+            background: var(--color-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            /* Font schaalt mee met center-size (ongeveer 50% van center) */
+            font-size: calc(var(--center-size) * 0.5);
+            font-weight: bold;
+            box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            border: 0.1875rem solid #fff;
+        }
+
+        .spinner-numbers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+
+        .spinner-number {
+            position: absolute;
+            /* Dynamische grootte */
+            width: var(--number-size);
+            height: var(--number-size);
+            min-width: 2rem;
+            min-height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            font-weight: bold;
+            color: var(--color-red);
+            font-size: clamp(0.75rem, 2.5vw, 1.75rem);
+            left: 50%;
+            top: 50%;
+            transform-origin: center center;
+            box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.2);
+        }
+
+        .spinner-number.removed {
+            background: rgba(150, 150, 150, 0.7);
+            color: #666;
+            text-decoration: line-through;
+        }
+
+        .spinner-pointer {
+            /* Rij 1: vaste hoogte, altijd zichtbaar */
+            grid-row: 1;
+            align-self: end;
+            justify-self: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            /* Hoogte past binnen de vaste rij */
+            height: 100%;
+            max-height: var(--pointer-height);
+        }
+
+        .spinner-pointer::before {
+            content: '';
+            width: 0.75rem;
+            /* Stok is 40% van pointer hoogte */
+            height: 40%;
+            min-height: 1rem;
+            background: linear-gradient(to bottom, var(--color-red), #a01830);
+            border-radius: 0.5rem 0.5rem 0 0;
+        }
+
+        .spinner-pointer::after {
+            content: '';
+            width: 0;
+            height: 0;
+            /* Driehoek schaalt met pointer hoogte */
+            border-left: 1.5rem solid transparent;
+            border-right: 1.5rem solid transparent;
+            border-top: 2rem solid #a01830;
+            filter: drop-shadow(0 0.1875rem 0.3125rem rgba(0,0,0,0.3));
+        }
+
+        .spinner-pointer.highlight::after {
+            animation: pulse 0.6s ease-in-out 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 0.3125rem var(--color-red));
+                border-top-color: var(--color-red);
+            }
+            50% {
+                filter: drop-shadow(0 0 0.9375rem #ff0000);
+                border-top-color: #ff0000;
+            }
+        }
+
+        .result {
+            font-size: 1.1rem;
+            color: var(--color-red);
+            font-weight: bold;
+            text-align: center;
+            min-height: 1.5rem;
+        }
+
+        /* =====================================================
+           POPUP MODAL - Touch-friendly
+           ===================================================== */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .popup-content {
+            background: linear-gradient(135deg, var(--color-green) 0%, #0d2818 100%);
+            padding: clamp(1.5rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 3rem);
+            border-radius: 1.25rem;
+            text-align: center;
+            box-shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.5);
+            border: 0.25rem solid var(--color-red);
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: min(90vw, 28rem);
+            width: 100%;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .popup-emoji {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            margin-bottom: 0.75rem;
+            animation: bounce 0.6s ease-in-out infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-0.625rem); }
+        }
+
+        .popup-title {
+            font-size: clamp(1.25rem, 4vw, 1.75rem);
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0.125rem 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+        }
+
+        .popup-message {
+            font-size: clamp(1rem, 3vw, 1.375rem);
+            color: var(--color-gold);
+            margin-bottom: 1.25rem;
+            font-weight: bold;
+        }
+
+        .popup-close {
+            /* Touch target: minimaal 44x44px */
+            min-height: 2.75rem;
+            min-width: 8rem;
+            padding: 0.875rem 2rem;
+            background: var(--color-red);
+            color: #fff;
+            border: none;
+            border-radius: 0.625rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0.25rem 0.9375rem rgba(196, 30, 58, 0.4);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .popup-close:active {
+            background: #ff4d6d;
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .popup-close:hover {
+                background: #ff4d6d;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes resultPop {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* =====================================================
+           SPIN BUTTON - Extra groot, touch-friendly
+           ===================================================== */
+        .spin-button {
+            /* Touch target > 44px, past binnen vaste hoogte */
+            height: calc(var(--button-height) - 0.5rem);
+            min-height: 2.75rem;
+            max-height: 4rem;
+            padding: 0.75rem 2rem;
+            background: var(--color-red);
+            color: #fff;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.4);
+            -webkit-tap-highlight-color: transparent;
+            white-space: nowrap;
+            max-width: 90vw;
+        }
+
+        .spin-button:active:not(:disabled) {
+            background: var(--color-green);
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .spin-button:hover:not(:disabled) {
+                background: var(--color-green);
+            }
+        }
+
+        .spin-button:disabled {
+            background: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .button-container {
+            /* Rij 3: vaste hoogte, altijd zichtbaar */
+            grid-row: 3;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            z-index: 11;
+            width: 100%;
+            height: 100%;
+            max-height: var(--button-height);
+            padding: 0 1rem;
+            /* Knop mag niet buiten container */
+            overflow: hidden;
+        }
+
+        /* =====================================================
+           ADMIN PANEL
+           ===================================================== */
+        .admin-toggle {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom, 0) + 1rem);
+            right: calc(env(safe-area-inset-right, 0) + 1rem);
+            width: 3rem;
+            height: 3rem;
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+            z-index: 1002; /* boven andere overlays */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.1s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .admin-toggle:active {
+            background: var(--color-red);
+            transform: scale(0.95);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .admin-toggle:hover {
+                background: var(--color-red);
+            }
+        }
+
+        .admin-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            padding: 1rem;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .admin-overlay.show {
+            display: flex;
+        }
+
+        .admin-panel {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            max-width: min(90vw, 24rem);
+            width: 100%;
+            box-shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.5);
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .admin-panel h3 {
+            margin: 0 0 1rem 0;
+            color: var(--color-green);
+            font-size: 1.25rem;
+            text-align: center;
+            border-bottom: 2px solid var(--color-red);
+            padding-bottom: 0.75rem;
+        }
+
+        .admin-gifts-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-gift-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f5f5f5;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .admin-gift-item:active {
+            background: #e0e0e0;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .admin-gift-item:hover {
+                background: #e0e0e0;
+            }
+        }
+
+        .admin-gift-item input[type="checkbox"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: var(--color-green);
+            cursor: pointer;
+        }
+
+        .admin-gift-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .admin-gift-item.unavailable {
+            background: #ffebee;
+        }
+
+        .admin-gift-item.unavailable label {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .admin-buttons {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .admin-btn {
+            min-height: 2.75rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .admin-btn.save {
+            background: var(--color-green);
+            color: #fff;
+        }
+
+        .admin-btn.save:active {
+            background: #0d5c2a;
+        }
+
+        .admin-btn.cancel {
+            background: #999;
+            color: #fff;
+        }
+
+        .admin-btn.cancel:active {
+            background: #777;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .admin-btn.save:hover {
+                background: #0d5c2a;
+            }
+            .admin-btn.cancel:hover {
+                background: #777;
+            }
+        }
+        
+
+        .remove-button {
+            min-height: 2.75rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--color-green);
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .remove-button:active {
+            background: var(--color-red);
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .remove-button:hover {
+                background: var(--color-red);
+            }
+        }
+
+        /* =====================================================
+           CHRISTMAS TREES - Verborgen op mobiel
+           ===================================================== */
+        .christmas-trees {
+            display: none; /* Verberg op mobiel */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .christmas-trees .snow-img {
+            position: absolute;
+            bottom: 0;
+            height: auto;
+            opacity: 0.95;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .christmas-trees .snow-img.left-snow {
+            left: 0;
+        }
+
+        .christmas-trees .snow-img.right-snow {
+            right: 0;
+        }
+
+        .christmas-trees img.tree {
+            position: absolute;
+            bottom: 0;
+            width: auto;
+            opacity: 0.95;
+            z-index: 1;
+        }
+
+        .christmas-trees img.tree.left {
+            left: 2%;
+        }
+
+        .christmas-trees img.tree.right {
+            right: 2%;
+        }
+
+        /* =====================================================
+           TABLET PORTRAIT - Samsung Tab S9+ (768px - 1024px)
+           Verticale oriëntatie, 2-kolom layout indien nodig
+           ===================================================== */
+        @media screen and (min-width: 48rem) {
+            :root {
+                --wheel-size: 55vw;
+                --nav-height: 4rem;
+            }
+
+            .nav-header {
+                gap: 2rem;
+                padding: 0.75rem 1.5rem;
+            }
+
+            .nav-header a {
+                font-size: 1.125rem;
+                padding: 0.875rem 1.5rem;
+            }
+
+            .container {
+                padding: 1.5rem 2rem;
+                max-width: 95%;
+                margin-left: auto;
+                margin-right: auto;
+                border-radius: 0;
+            }
+
+            header {
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .content {
+                gap: 1rem;
+            }
+
+            .spin-button {
+                min-height: 5rem;
+                padding: 2rem 4rem;
+                font-size: 1.75rem;
+                border-radius: 1.25rem;
+            }
+
+            /* Toon kerstbomen op tablet */
+            .christmas-trees {
+                display: block;
+            }
+
+            .christmas-trees .snow-img {
+                width: calc(50% - 20rem);
+            }
+
+            .christmas-trees img.tree {
+                height: 15rem;
+            }
+        }
+
+        /* =====================================================
+           TABLET LANDSCAPE - Samsung Tab S9+ (1024px - 1366px)
+           Horizontale oriëntatie, ruimere layout
+           Touch-apparaat: grotere tap targets behouden
+           ===================================================== */
+        @media screen and (min-width: 64rem) {
+            :root {
+                --wheel-size: min(50vh, 45vw);
+                --nav-height: 4rem;
+            }
+
+            .container {
+                max-width: 90%;
+                padding: 1.5rem 3rem;
+            }
+
+            .spinner-container {
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .spin-button {
+                min-height: 5.5rem;
+                padding: 2.5rem 5rem;
+                font-size: 2rem;
+            }
+
+            .popup-content {
+                max-width: min(80vw, 32rem);
+                padding: 2.5rem 3rem;
+            }
+
+            .christmas-trees .snow-img {
+                width: calc(50% - 25rem);
+            }
+
+            .christmas-trees img.tree {
+                height: 22rem;
+            }
+
+            .christmas-trees img.tree.left {
+                left: 3%;
+            }
+
+            .christmas-trees img.tree.right {
+                right: 3%;
+            }
+        }
+
+        /* =====================================================
+           DESKTOP (1366px+)
+           Apparaten met muis: hover effecten actief
+           ===================================================== */
+        @media screen and (min-width: 85.375rem) {
+            :root {
+                --wheel-size: min(70vh, 45rem);
+            }
+
+            .container {
+                max-width: 60rem;
+                border-radius: 0;
+                box-shadow: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.3);
+            }
+
+            .spin-button {
+                min-height: 6rem;
+                padding: 3rem 7rem;
+                font-size: 2.5rem;
+            }
+
+            .christmas-trees .snow-img {
+                width: calc(50% - 28rem);
+            }
+
+            .christmas-trees img.tree {
+                height: 35rem;
+            }
+
+            .christmas-trees img.tree.left {
+                left: 4%;
+            }
+
+            .christmas-trees img.tree.right {
+                right: 4%;
+            }
+        }
+
+        /* =====================================================
+           GROTE DESKTOP (1440px+)
+           ===================================================== */
+        @media screen and (min-width: 90rem) {
+            .christmas-trees .snow-img {
+                width: calc(50% - 30rem);
+            }
+
+            .christmas-trees img.tree {
+                height: 38rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-header">
+          <a href="../home.html">Home</a>
+          <a href="../menu/index.html">📋 Menu</a>
+          <a href="../kerstcadeaus/index.html" class="active">🎁 Cadeaus</a>
+          <a href="../openhaard/index.html">🔥 Openhaard</a>
+          <a href="../muziek/index.html">🎵 Muziek</a>
+    </div>
+    <script>
+    document.querySelectorAll('.nav-header a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (window.parent !== window && window.parent.document.getElementById('contentFrame')) {
+                e.preventDefault();
+                window.parent.document.getElementById('contentFrame').src = this.href;
+            }
+        });
+    });
+    </script>
+
+    <!-- Overvliegende kerstman -->
+    <img src="../images/kerstman.png" alt="Kerstman" class="santa" id="flyingSantaGifts">
+    <!-- Santa audio on gifts page -->
+    <audio id="santaSoundGifts" src="../audio/🎅 Free Santa Sound Effect _ _Ho Ho Ho Merry Christmas_ 🎅.mp3" preload="auto"></audio>
+
+    <script>
+        // Creëer sneeuwvlokken
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 4 + 's';
+            snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'em';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(snowflake);
+            
+            // Verwijder sneeuwvlok na animatie
+            setTimeout(() => {
+                snowflake.remove();
+            }, (parseFloat(snowflake.style.animationDuration) + parseFloat(snowflake.style.animationDelay)) * 1000);
+        }
+        
+        // Creëer initiele sneeuwvlokken
+        for (let i = 0; i < 50; i++) {
+            setTimeout(createSnowflake, i * 100);
+        }
+        
+        // Blijf nieuwe sneeuwvlokken maken
+        setInterval(createSnowflake, 300);
+
+        // Creëer sterren in de hemel
+        function createStars() {
+            const starCount = 80;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random grootte (1-3px)
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Random positie
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 60 + 'vh'; // Alleen bovenste 60% van scherm
+                
+                // Random opacity
+                star.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                // Sommige sterren laten blinken (30% kans)
+                if (Math.random() < 0.3) {
+                    star.classList.add('twinkle');
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                }
+                
+                document.body.appendChild(star);
+            }
+        }
+        createStars();
+
+        // Santa click sound on gifts page
+        const flyingSantaGifts = document.getElementById('flyingSantaGifts');
+        const santaSoundGifts = document.getElementById('santaSoundGifts');
+        if (flyingSantaGifts && santaSoundGifts) {
+            santaSoundGifts.volume = 0.6;
+            flyingSantaGifts.addEventListener('click', function(e) {
+                e.stopPropagation();
+                santaSoundGifts.currentTime = 0;
+                santaSoundGifts.play().catch(err => console.log('Santa sound failed:', err));
+            });
+        }
+    </script>
+    <div class="container">
+        <header>
+            <h1>🎁 Kerstcadeaus 🎁</h1>
+            <p class="subtitle">Leuke cadeaus voor de feestdagen</p>
+        </header>
+
+        <div class="content">
+            <div class="spinner-pointer"></div>
+            <div class="spinner-container">
+                <div class="spinner-wheel" id="spinnerWheel">
+                    <div class="spinner-numbers" id="spinnerNumbers"></div>
+                    <div class="spinner-center">🎁</div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button class="spin-button" id="spinButton">SPIN & WIN!</button>
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-emoji">🎁</div>
+            <div class="popup-title">Gefeliciteerd!</div>
+            <div class="popup-message" id="popupMessage"></div>
+            <button class="popup-close" id="popupClose">🎄 Sluiten</button>
+        </div>
+    </div>
+
+    <!-- Admin Toggle Button -->
+    <button class="admin-toggle" id="adminToggle" title="Admin Panel">⚙️</button>
+
+    <!-- Admin Panel Modal -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <h3>🎄 Cadeaus Beheren</h3>
+            <div class="admin-gifts-list" id="adminGiftsList"></div>
+            <div class="admin-buttons">
+                <button class="admin-btn save" id="adminSave">✓ Opslaan</button>
+                <button class="admin-btn cancel" id="adminCancel">✗ Annuleren</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elementen -->
+    <audio id="spinSound" src="../audio/Spinning Prize Wheel Sound Effect.mp3"></audio>
+    <audio id="cheerSound" src="../audio/CROWD CHEER SOUND EFFECT.mp3"></audio>
+
+    <script>
+        // Audio references
+        const spinSound = document.getElementById('spinSound');
+        const cheerSound = document.getElementById('cheerSound');
+        spinSound.volume = 0.5;
+        cheerSound.volume = 0.6;
+        
+        // Bereken spin duration op basis van audio lengte (minus 2.5 seconde voor kortere sync)
+        let spinDuration = 4.5; // default 4.5 seconden
+        spinSound.addEventListener('loadedmetadata', function() {
+            spinDuration = Math.max(spinSound.duration - 2.5, 3); // min 3 seconden
+        });
+        
+        const wheel = document.getElementById('spinnerWheel');
+        const spinButton = document.getElementById('spinButton');
+        const result = document.getElementById('result');
+        const spinnerNumbers = document.getElementById('spinnerNumbers');
+        const pointer = document.querySelector('.spinner-pointer');
+        const popupOverlay = document.getElementById('popupOverlay');
+        const popupMessage = document.getElementById('popupMessage');
+        const popupClose = document.getElementById('popupClose');
+        
+        let isSpinning = false;
+        let lastSelectedGift = null;
+        let availableGifts = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Indices van beschikbare cadeaus
+        
+        const gifts = [
+            '🎁 Cadeau 1',
+            '🎀 Cadeau 2',
+            '🎊 Cadeau 3',
+            '🎉 Cadeau 4',
+            '🎈 Cadeau 5',
+            '🎂 Cadeau 6',
+            '🍾 Cadeau 7',
+            '⭐ Cadeau 8',
+            '💝 Cadeau 9',
+            '🌟 Cadeau 10'
+        ];
+
+        // Functie om de rad achtergrond (conic-gradient) dynamisch te genereren
+        function updateWheelGradient() {
+            const count = availableGifts.length;
+            if (count === 0) {
+                wheel.style.background = 'var(--color-green)';
+                return;
+            }
+            
+            const segmentAngle = 360 / count;
+            // Iets dikkere scheidingslijn tussen segmenten (~3px equivalent)
+            const gapDeg = Math.max(1.5, 360 / (count * 40));
+            let gradientParts = [];
+            
+            for (let i = 0; i < count; i++) {
+                const color = i % 2 === 0 ? 'var(--color-red)' : 'var(--color-green)';
+                const startAngle = i * segmentAngle;
+                const colorEnd = (i + 1) * segmentAngle - gapDeg;
+                const endAngle = (i + 1) * segmentAngle;
+                gradientParts.push(`${color} ${startAngle}deg ${colorEnd}deg`);
+                gradientParts.push(`#000 ${colorEnd}deg ${endAngle}deg`);
+            }
+            
+            wheel.style.background = `conic-gradient(from 0deg, ${gradientParts.join(', ')})`;
+        }
+
+        // Functie om nummers op het wiel te plaatsen (alleen beschikbare)
+        function renderNumbers() {
+            spinnerNumbers.innerHTML = '';
+            const count = availableGifts.length;
+            
+            if (count === 0) {
+                updateWheelGradient();
+                return;
+            }
+            
+            // Update de conic-gradient
+            updateWheelGradient();
+            
+            // Gebruik clientWidth voor stabiele meting (excl. scrollbars)
+            const wheelSize = wheel.clientWidth || 300;
+            // Consistente radius: halve diameter minus ringmarge
+            const ringMargin = Math.max(0.12 * wheelSize, 40); // minimaal 40px marge
+            const radius = wheelSize / 2 - ringMargin;
+            const numberSize = Math.max(0.08 * wheelSize, 32);
+            
+            // Dynamische segmentgrootte
+            const segmentAngle = 360 / count;
+
+            for (let i = 0; i < count; i++) {
+                const giftIndex = availableGifts[i];
+                // Elk segment is (360/count) graden, nummer in het MIDDEN van segment
+                const angle = i * segmentAngle + (segmentAngle / 2);
+                const numberDiv = document.createElement('div');
+                numberDiv.className = 'spinner-number';
+                numberDiv.dataset.index = giftIndex;
+                numberDiv.dataset.position = i; // Positie op het rad
+
+                // Dynamische grootte voor perfecte uitlijning
+                numberDiv.style.width = numberSize + 'px';
+                numberDiv.style.height = numberSize + 'px';
+                numberDiv.style.marginLeft = -(numberSize / 2) + 'px';
+                numberDiv.style.marginTop = -(numberSize / 2) + 'px';
+
+                // Toon het originele nummer (1-10)
+                numberDiv.textContent = giftIndex + 1;
+
+                // Bereken de positie op basis van hoek
+                const radians = (angle - 90) * Math.PI / 180; // -90 zodat 0 bovenaan staat
+                const x = Math.cos(radians) * radius;
+                const y = Math.sin(radians) * radius;
+
+                numberDiv.style.transform = `translate(${x}px, ${y}px)`;
+                spinnerNumbers.appendChild(numberDiv);
+            }
+        }
+
+        // Initieel renderen zodra layout klaar is
+        requestAnimationFrame(() => renderNumbers());
+
+        // ResizeObserver voor wheel - reageert op container size changes
+        const wheelResizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(renderNumbers);
+        });
+        wheelResizeObserver.observe(wheel);
+
+        // Herrender bij window resize (fallback)
+        window.addEventListener('resize', () => requestAnimationFrame(renderNumbers));
+
+        spinButton.addEventListener('click', spin);
+        // Klik op het rad triggert dezelfde actie als de knop
+        wheel.addEventListener('click', spin);
+        popupClose.addEventListener('click', closePopupAndRemoveGift);
+        popupOverlay.addEventListener('click', function(e) {
+            if (e.target === popupOverlay) {
+                closePopupAndRemoveGift();
+            }
+        });
+
+        // =====================================================
+        // ADMIN PANEL FUNCTIONALITEIT
+        // =====================================================
+        const adminToggle = document.getElementById('adminToggle');
+        const adminOverlay = document.getElementById('adminOverlay');
+        const adminGiftsList = document.getElementById('adminGiftsList');
+        const adminSave = document.getElementById('adminSave');
+        const adminCancel = document.getElementById('adminCancel');
+        let tempAvailableGifts = [];
+
+        function renderAdminPanel() {
+            adminGiftsList.innerHTML = '';
+            tempAvailableGifts = [...availableGifts]; // Kopie voor tijdelijke bewerking
+            
+            for (let i = 0; i < 10; i++) {
+                const isAvailable = availableGifts.includes(i);
+                const item = document.createElement('div');
+                item.className = 'admin-gift-item' + (isAvailable ? '' : ' unavailable');
+                item.innerHTML = `
+                    <input type="checkbox" id="adminGift${i}" ${isAvailable ? 'checked' : ''} data-index="${i}">
+                    <label for="adminGift${i}">${gifts[i]}</label>
+                `;
+                
+                // Toggle bij klikken op hele item
+                item.addEventListener('click', function(e) {
+                    if (e.target.tagName !== 'INPUT') {
+                        const checkbox = item.querySelector('input');
+                        checkbox.checked = !checkbox.checked;
+                        checkbox.dispatchEvent(new Event('change'));
+                    }
+                });
+                
+                // Update styling bij checkbox change
+                const checkbox = item.querySelector('input');
+                checkbox.addEventListener('change', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (this.checked) {
+                        if (!tempAvailableGifts.includes(index)) {
+                            tempAvailableGifts.push(index);
+                        }
+                        item.classList.remove('unavailable');
+                    } else {
+                        const idx = tempAvailableGifts.indexOf(index);
+                        if (idx > -1) tempAvailableGifts.splice(idx, 1);
+                        item.classList.add('unavailable');
+                    }
+                });
+                
+                adminGiftsList.appendChild(item);
+            }
+        }
+
+        function openAdminPanel() {
+            renderAdminPanel();
+            adminOverlay.classList.add('show');
+        }
+
+        function closeAdminPanel() {
+            adminOverlay.classList.remove('show');
+        }
+
+        function saveAdminChanges() {
+            availableGifts = [...tempAvailableGifts].sort((a, b) => a - b);
+            renderNumbers();
+            closeAdminPanel();
+        }
+
+        adminToggle.addEventListener('click', openAdminPanel);
+        adminCancel.addEventListener('click', closeAdminPanel);
+        adminSave.addEventListener('click', saveAdminChanges);
+        adminOverlay.addEventListener('click', function(e) {
+            if (e.target === adminOverlay) {
+                closeAdminPanel();
+            }
+        });
+
+        function showPopup(giftName) {
+            popupMessage.textContent = `Je mag ${giftName} openen!`;
+            popupOverlay.classList.add('show');
+            
+            // Speel cheer geluid af
+            cheerSound.currentTime = 0;
+            cheerSound.play().catch(err => console.log('Cheer sound failed:', err));
+        }
+
+        function closePopupAndRemoveGift() {
+            popupOverlay.classList.remove('show');
+            
+            if (lastSelectedGift === null) return;
+            
+            // Verwijder het geselecteerde cadeau uit de beschikbare lijst
+            const index = availableGifts.indexOf(lastSelectedGift);
+            if (index > -1) {
+                availableGifts.splice(index, 1);
+            }
+            
+            // Reset wheel transform voor volgende spin
+            wheel.style.transform = '';
+            
+            // Update de visuele weergave (gradient + nummers)
+            renderNumbers();
+            
+            // Popup afhandeling volstaat; resultaat blijft leeg
+            result.textContent = '';
+            lastSelectedGift = null;
+        }
+
+        function spin() {
+            if (isSpinning) return;
+            if (availableGifts.length === 0) {
+                result.textContent = '🎄 Alle cadeaus zijn al uitgedeeld!';
+                return;
+            }
+            
+            isSpinning = true;
+            spinButton.disabled = true;
+            result.textContent = '';
+            pointer.classList.remove('highlight');
+            
+            // Reset wheel transform voor nieuwe spin
+            wheel.style.transform = '';
+            wheel.classList.remove('spinning');
+            
+            // Forceer reflow zodat animatie opnieuw start
+            void wheel.offsetWidth;
+            
+            // Start spin geluid
+            spinSound.currentTime = 0;
+            spinSound.play().catch(err => console.log('Spin sound failed:', err));
+            
+            // Random aantal rotaties (minimaal 7, maximaal 12 voor langere spin)
+            const spins = Math.floor(Math.random() * 5) + 7;
+            // Random cadeau uit beschikbare cadeaus (index in de array)
+            const randomIndex = Math.floor(Math.random() * availableGifts.length);
+            const selectedGift = availableGifts[randomIndex];
+            lastSelectedGift = selectedGift;
+            
+            // DYNAMISCHE hoekberekening: segmentgrootte hangt af van aantal beschikbare cadeaus
+            const count = availableGifts.length;
+            const segmentAngle = 360 / count;
+            // De positie op het rad is randomIndex (niet selectedGift!)
+            const selectedAngle = randomIndex * segmentAngle + (segmentAngle / 2);
+            // Totale rotatie: hele rotaties + (360 - selectedAngle) om de pijl naar dit segment te laten wijzen
+            const totalRotation = spins * 360 + (360 - selectedAngle);
+            
+            // Zet CSS variabelen voor de animatie (duur = audio lengte)
+            wheel.style.setProperty('--spin-deg', totalRotation + 'deg');
+            wheel.style.setProperty('--spin-time', spinDuration + 's');
+            wheel.classList.add('spinning');
+            
+            // Na animatie: toon popup en laat pijl blinken (wacht op audio duration)
+            setTimeout(() => {
+                wheel.classList.remove('spinning');
+                wheel.style.transform = `rotate(${totalRotation}deg)`;
+                pointer.classList.add('highlight');
+                isSpinning = false;
+                spinButton.disabled = false;
+                
+                // Stop spin geluid
+                spinSound.pause();
+                spinSound.currentTime = 0;
+                
+                // Toon popup
+                showPopup(gifts[selectedGift]);
+            }, spinDuration * 1000);
+        }
+    </script>
+    <div class="christmas-trees">
+        <img src="../images/sneeuw.png" alt="Sneeuw links" class="snow-img left-snow">
+        <img src="../images/sneeuw.png" alt="Sneeuw rechts" class="snow-img right-snow">
+        <img src="../images/kerstboom.png" alt="Kerstboom links" class="tree left">
+        <img src="../images/kerstboom.png" alt="Kerstboom rechts" class="tree right">
+    </div>
+</body>
+</html>

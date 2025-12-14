@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Openhaard - Kerstsfeer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #0a0a0a;
+            color: #fff;
+        }
+
+        /* Navigation */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 71, 42, 0.95);
+            padding: 0.5rem 1rem;
+            box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            backdrop-filter: blur(5px);
+            min-height: 3.5rem;
+            align-items: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .nav-header.hidden {
+            opacity: 0;
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+
+        .nav-header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            min-height: 2.75rem;
+            min-width: 2.75rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
+
+        .nav-header a:active,
+        .nav-header a.active {
+            background: #c41e3a;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .nav-header a:hover {
+                background: #c41e3a;
+            }
+        }
+
+        /* Fireplace container */
+        .fireplace-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at bottom, #1a0a00 0%, #0a0a0a 70%);
+        }
+
+        /* Fireplace video/image */
+        .fireplace-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Cozy ambient glow overlay */
+        .ambient-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center 80%, rgba(255, 120, 50, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+            animation: ambientPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes ambientPulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* Start overlay for audio activation */
+        .start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        .start-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .start-overlay .play-icon {
+            font-size: 5rem;
+            color: #ff6600;
+            animation: pulse 1.5s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(255, 100, 0, 0.8);
+        }
+
+        .start-overlay .start-text {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Fullscreen button */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 4rem;
+            height: 4rem;
+            background: rgba(196, 30, 58, 0.9);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.4);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease, transform 0.1s ease, opacity 0.5s ease;
+        }
+
+        .fullscreen-btn:hover {
+            background: #1a472a;
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Instructions */
+        .instructions {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            text-align: center;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .instructions.hidden {
+            opacity: 0;
+        }
+
+        /* Fullscreen mode hides nav */
+        :fullscreen .nav-header,
+        :-webkit-full-screen .nav-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-header" id="navHeader">
+        <a href="../home.html">🏠 Home</a>
+        <a href="../menu/index.html">📋 Menu</a>
+        <a href="../kerstcadeaus/index.html">🎁 Cadeaus</a>
+        <a href="../openhaard/index.html" class="active">🔥 Openhaard</a>
+        <a href="../muziek/index.html">🎵 Muziek</a>
+    </div>
+    <script>
+    document.querySelectorAll('.nav-header a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (window.parent !== window && window.parent.document.getElementById('contentFrame')) {
+                e.preventDefault();
+                window.parent.document.getElementById('contentFrame').src = this.href;
+            }
+        });
+    });
+    </script>
+
+    <div class="fireplace-container" id="fireplaceContainer">
+        <!-- Fullscreen looping fireplace video -->
+        <video class="fireplace-media" id="fireplaceVideo" autoplay loop muted playsinline>
+            <source src="../video/Short Fireplace Video Loop with Sound- 1 minute loop - Template Fireplace for Background Winter.mp4" type="video/mp4">
+        </video>
+        <!-- Separate audio track for better control -->
+        <audio id="fireplaceAudio" loop preload="auto">
+            <source src="../audio/Short Fireplace Video Loop with Sound- 1 minute loop - Template Fireplace for Background Winter.mp3" type="audio/mpeg">
+        </audio>
+        <!-- Cozy ambient glow overlay -->
+        <div class="ambient-glow"></div>
+    </div>
+
+    <button class="fullscreen-btn" id="fullscreenBtn" title="Volledig scherm">⛶</button>
+    
+    <p class="instructions" id="instructions">Klik op ⛶ voor volledig scherm • Klik ergens om UI te verbergen</p>
+
+    <!-- Start overlay - needed for audio autoplay on mobile/browsers -->
+    <div class="start-overlay" id="startOverlay">
+        <div class="play-icon">🔥</div>
+        <div class="start-text">Klik om de openhaard te starten</div>
+    </div>
+
+    <script>
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const fireplaceContainer = document.getElementById('fireplaceContainer');
+        const navHeader = document.getElementById('navHeader');
+        const instructions = document.getElementById('instructions');
+        const startOverlay = document.getElementById('startOverlay');
+        const fireplaceVideo = document.getElementById('fireplaceVideo');
+        const fireplaceAudio = document.getElementById('fireplaceAudio');
+        
+        let uiHidden = false;
+        let audioStarted = false;
+
+        // Start overlay click - needed for audio autoplay
+        startOverlay.addEventListener('click', function() {
+            startOverlay.classList.add('hidden');
+            
+            // Start video with sound
+            fireplaceVideo.muted = false;
+            fireplaceVideo.play().catch(() => {
+                // Fallback: keep muted if audio blocked
+                fireplaceVideo.muted = true;
+                fireplaceVideo.play();
+            });
+            
+            // Start the separate audio track
+            fireplaceAudio.volume = 0.7;
+            fireplaceAudio.play().catch(err => console.log('Audio autoplay blocked:', err));
+            audioStarted = true;
+        });
+
+        // Fullscreen toggle
+        fullscreenBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Fullscreen failed:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        // Click anywhere to toggle UI visibility
+        fireplaceContainer.addEventListener('click', function() {
+            if (!audioStarted) return; // Don't toggle if overlay is still showing
+            uiHidden = !uiHidden;
+            navHeader.classList.toggle('hidden', uiHidden);
+            fullscreenBtn.classList.toggle('hidden', uiHidden);
+            instructions.classList.toggle('hidden', true);
+        });
+
+        // Sync video and audio loop timing
+        fireplaceVideo.addEventListener('ended', function() {
+            fireplaceVideo.currentTime = 0;
+            fireplaceVideo.play();
+        });
+
+        fireplaceAudio.addEventListener('ended', function() {
+            fireplaceAudio.currentTime = 0;
+            fireplaceAudio.play();
+        });
+
+        // Hide instructions after 5 seconds
+        setTimeout(() => {
+            instructions.classList.add('hidden');
+        }, 5000);
+
+        // Update fullscreen button icon
+        document.addEventListener('fullscreenchange', function() {
+            if (document.fullscreenElement) {
+                fullscreenBtn.textContent = '✕';
+            } else {
+                fullscreenBtn.textContent = '⛶';
+            }
+        });
+    </script>
+</body>
+</html>

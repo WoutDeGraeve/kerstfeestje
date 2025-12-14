@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerstdiner Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(to bottom, #0a1628 0%, #1a2642 50%, #0d1b2a 100%);
+            background-attachment: fixed;
+            color: #333;
+            min-height: 100vh;
+            height: 100%;
+            padding: 20px;
+            padding-top: 80px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Navigation Header */
+        .nav-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 71, 42, 0.95);
+            padding: 15px 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-header a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 8px 20px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .nav-header a:hover,
+        .nav-header a.active {
+            background: #c41e3a;
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: #fff;
+            font-size: 1em;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.3;
+            }
+        }
+
+        /* Stars in the sky */
+        .star {
+            position: fixed;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star.twinkle {
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        .santa {
+            position: fixed;
+            top: 10%;
+            left: -200px;
+            width: 180px;
+            height: auto;
+            z-index: 1000;
+            animation: flySanta 12s ease-in-out 0s infinite, pauseSanta 45s step-end infinite;
+            pointer-events: auto; /* Klikken ingeschakeld */
+            cursor: pointer;
+        }
+
+        @keyframes pauseSanta {
+            0%, 26.67% {
+                opacity: 1;
+            }
+            26.68%, 100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes flySanta {
+            0% {
+                left: -200px;
+                top: 8%;
+            }
+            15% {
+                top: 25%;
+            }
+            30% {
+                top: 12%;
+            }
+            45% {
+                top: 30%;
+            }
+            60% {
+                top: 18%;
+            }
+            75% {
+                top: 28%;
+            }
+            90% {
+                top: 10%;
+            }
+            100% {
+                left: 100vw;
+                top: 15%;
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            height: calc(100vh - 20px);
+            overflow-y: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #c41e3a;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #c41e3a;
+            margin-bottom: 10px;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #1a472a;
+            font-style: italic;
+        }
+
+        .course {
+            margin-bottom: 40px;
+        }
+
+        .course-title {
+            font-size: 1.8em;
+            color: #1a472a;
+            margin-bottom: 15px;
+            border-left: 5px solid #c41e3a;
+            padding-left: 15px;
+        }
+
+        .dish {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .dish-name {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .dish-description {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #1a472a;
+            color: #666;
+            font-style: italic;
+        }
+
+        .decoration {
+            text-align: center;
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .drinks-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 3px solid #c41e3a;
+        }
+
+        .drinks-title {
+            font-size: 2.2em;
+            color: #c41e3a;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .drink {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #1a472a;
+        }
+
+        .drink-name {
+            font-size: 1.4em;
+            color: #c41e3a;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .drink-tagline {
+            font-size: 1em;
+            color: #555;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .drink-ingredients {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .drink-ingredients strong {
+            color: #1a472a;
+        }
+
+        .drink-special {
+            font-size: 0.95em;
+            color: #c41e3a;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .drink-menu {
+            font-size: 1em;
+            color: #333;
+            font-style: italic;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .mocktail {
+            border-left-color: #2d5016;
+        }
+
+        .mocktail .drink-name {
+            color: #2d5016;
+        }
+
+        /* Responsive Design */
+        
+        /* Extra small devices (phones, 480px and below) */
+        @media screen and (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                width: 100%;
+                padding: 12px;
+                border-radius: 0;
+                height: calc(100vh - 10px);
+            }
+
+            h1 {
+                font-size: 1.5em;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 0.85em;
+            }
+
+            .course-title {
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+
+            .dish {
+                padding-left: 8px;
+                margin-bottom: 12px;
+            }
+
+            .dish-name {
+                font-size: 0.95em;
+                margin-bottom: 3px;
+            }
+
+            .dish-description {
+                font-size: 0.8em;
+            }
+
+            .drink {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            .drink-name {
+                font-size: 1em;
+                margin-bottom: 5px;
+            }
+
+            .drink-tagline,
+            .drink-ingredients,
+            .drink-special,
+            .drink-menu {
+                font-size: 0.8em;
+            }
+
+            .decoration {
+                font-size: 1em;
+                margin: 10px 0;
+            }
+
+            h3, h4 {
+                font-size: 0.95em !important;
+                margin-top: 15px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .drinks-title {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+            }
+
+            header {
+                margin-bottom: 20px;
+                padding-bottom: 12px;
+                border-bottom-width: 2px;
+            }
+
+            .drinks-section {
+                margin-top: 25px;
+                padding-top: 15px;
+            }
+
+            footer {
+                margin-top: 20px;
+                padding-top: 12px;
+                font-size: 0.85em;
+            }
+            
+            .santa {
+                width: 100px;
+            }
+        }
+
+        /* Small tablets (481px - 768px) */
+        @media screen and (min-width: 481px) and (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                width: 95%;
+                padding: 20px;
+                height: calc(100vh - 20px);
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .course-title {
+                font-size: 1.4em;
+            }
+
+            .dish-name {
+                font-size: 1.1em;
+            }
+
+            .dish-description {
+                font-size: 0.9em;
+            }
+
+            .drinks-title {
+                font-size: 1.8em;
+            }
+
+            .drink-name {
+                font-size: 1.2em;
+            }
+
+            .drink-tagline,
+            .drink-ingredients,
+            .drink-special,
+            .drink-menu {
+                font-size: 0.9em;
+            }
+
+            .decoration {
+                font-size: 1.5em;
+            }
+
+            h3, h4 {
+                font-size: 1.2em !important;
+            }
+
+            .drinks-section {
+                margin-top: 35px;
+                padding-top: 20px;
+            }
+            
+            .santa {
+                width: 140px;
+            }
+        }
+
+        /* Large tablets and small laptops (769px - 1024px) */
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                max-width: 750px;
+                width: 85%;
+                padding: 35px;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .santa {
+                width: 160px;
+            }
+        }
+        
+        /* Laptops and desktops (1025px - 1440px) */
+        @media screen and (min-width: 1025px) and (max-width: 1440px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                max-width: 850px;
+                width: 70%;
+                padding: 40px;
+            }
+            
+            h1 {
+                font-size: 2.8em;
+            }
+            
+            .santa {
+                width: 180px;
+            }
+        }
+        
+        /* Large desktops and monitors (1441px and above) */
+        @media screen and (min-width: 1441px) {
+            body {
+                padding: 25px;
+            }
+            
+            .container {
+                max-width: 950px;
+                width: 60%;
+                padding: 50px;
+            }
+            
+            h1 {
+                font-size: 3.2em;
+            }
+            
+            .course-title {
+                font-size: 1.8em;
+            }
+            
+            .dish-name {
+                font-size: 1.4em;
+            }
+            
+            .dish-description {
+                font-size: 1.1em;
+            }
+            
+            .drinks-title {
+                font-size: 2.4em;
+            }
+            
+            .drink-name {
+                font-size: 1.5em;
+            }
+            
+            .santa {
+                width: 200px;
+            }
+        }
+        /* Christmas trees + ground snow at the bottom of the page */
+        .christmas-trees {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0; /* handled by image heights */
+            pointer-events: none;
+        }
+
+        /* ground snow images (left and right of white container) */
+        .christmas-trees .snow-img {
+            position: absolute;
+            bottom: 0;
+            height: auto;
+            opacity: 0.95;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .christmas-trees .snow-img.left-snow {
+            left: 0;
+            width: calc(50% - 400px);
+        }
+
+        .christmas-trees .snow-img.right-snow {
+            right: 0;
+            width: calc(50% - 400px);
+        }
+
+        /* tree images placed on the left and right above the snow */
+        .christmas-trees img.tree {
+            position: absolute;
+            bottom: 0;
+            height: 550px;
+            width: auto;
+            opacity: 0.95;
+            z-index: 1;
+        }
+
+        .christmas-trees img.tree.left {
+            left: 50px;
+        }
+
+        .christmas-trees img.tree.right {
+            right: 50px;
+        }
+
+        /* Christmas trees responsive */
+        @media screen and (max-width: 480px) {
+            .christmas-trees {
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 481px) and (max-width: 768px) {
+            .christmas-trees .snow-img {
+                width: calc(50% - 200px);
+            }
+            .christmas-trees img.tree {
+                height: 200px;
+            }
+            .christmas-trees img.tree.left {
+                left: 10px;
+            }
+            .christmas-trees img.tree.right {
+                right: 10px;
+            }
+        }
+        
+        @media screen and (min-width: 769px) and (max-width: 1024px) {
+            .christmas-trees .snow-img {
+                width: calc(50% - 320px);
+            }
+            .christmas-trees img.tree {
+                height: 350px;
+            }
+            .christmas-trees img.tree.left {
+                left: 25px;
+            }
+            .christmas-trees img.tree.right {
+                right: 25px;
+            }
+        }
+        
+        @media screen and (min-width: 1025px) and (max-width: 1440px) {
+            .christmas-trees .snow-img {
+                width: calc(50% - 380px);
+            }
+            .christmas-trees img.tree {
+                height: 480px;
+            }
+            .christmas-trees img.tree.left {
+                left: 40px;
+            }
+            .christmas-trees img.tree.right {
+                right: 40px;
+            }
+        }
+        
+        @media screen and (min-width: 1441px) {
+            .christmas-trees .snow-img {
+                width: calc(50% - 450px);
+            }
+            .christmas-trees img.tree {
+                height: 600px;
+            }
+            .christmas-trees img.tree.left {
+                left: 60px;
+            }
+            .christmas-trees img.tree.right {
+                right: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="../images/kerstman.png" alt="Kerstman" class="santa" id="flyingSanta">
+    
+    <!-- Audio voor kerstman -->
+    <audio id="santaSound" src="../audio/🎅 Free Santa Sound Effect _ _Ho Ho Ho Merry Christmas_ 🎅.mp3" preload="auto"></audio>
+    
+    <script>
+        // Kerstman geluid afspelen bij klikken
+        const flyingSanta = document.getElementById('flyingSanta');
+        const santaSound = document.getElementById('santaSound');
+        santaSound.volume = 0.6;
+        
+        flyingSanta.style.cursor = 'pointer';
+        flyingSanta.style.pointerEvents = 'auto'; // Zorg dat klikken werkt
+        flyingSanta.addEventListener('click', function(e) {
+            e.preventDefault();
+            santaSound.currentTime = 0;
+            santaSound.play().catch(err => console.log('Santa sound failed:', err));
+        });
+    </script>
+    
+    <script>
+        // Creëer sneeuwvlokken
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 4 + 's';
+            snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'em';
+            snowflake.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(snowflake);
+            
+            // Verwijder sneeuwvlok na animatie
+            setTimeout(() => {
+                snowflake.remove();
+            }, (parseFloat(snowflake.style.animationDuration) + parseFloat(snowflake.style.animationDelay)) * 1000);
+        }
+        
+        // Creëer initiele sneeuwvlokken
+        for (let i = 0; i < 50; i++) {
+            setTimeout(createSnowflake, i * 100);
+        }
+        
+        // Blijf nieuwe sneeuwvlokken maken
+        setInterval(createSnowflake, 300);
+
+        // Creëer sterren in de hemel
+        function createStars() {
+            const starCount = 80;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random grootte (1-3px)
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Random positie
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 60 + 'vh'; // Alleen bovenste 60% van scherm
+                
+                // Random opacity
+                star.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                // Sommige sterren laten blinken (30% kans)
+                if (Math.random() < 0.3) {
+                    star.classList.add('twinkle');
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                }
+                
+                document.body.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+    <div class="nav-header">
+          <a href="../home.html">Home</a>
+          <a href="../menu/index.html" class="active">📋 Menu</a>
+          <a href="../kerstcadeaus/index.html">🎁 Cadeaus</a>
+          <a href="../openhaard/index.html">🔥 Openhaard</a>
+          <a href="../muziek/index.html">🎵 Muziek</a>
+    </div>
+    <script>
+    document.querySelectorAll('.nav-header a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (window.parent !== window && window.parent.document.getElementById('contentFrame')) {
+                e.preventDefault();
+                window.parent.document.getElementById('contentFrame').src = this.href;
+            }
+        });
+    });
+    </script>
+    <div class="container">
+        <header>
+            <h1>🎄 Kerstdiner 2025 🎄</h1>
+            <p class="subtitle">Een feestelijk culinair arrangement</p>
+        </header>
+
+        <main>
+            <div class="course">
+                <h2 class="course-title">Amuse</h2>
+
+                <h4 style="font-size:1em; color:#c41e3a; margin-top:8px; margin-bottom:6px;">Warme Amuses</h4>
+                <!-- Mini worstenbroodjes removed -->
+                <div class="dish">
+                    <div class="dish-name">Warme Zakouskis</div>
+                    <div class="dish-description">Assortiment warme hapjes.</div>
+                </div>
+                <div class="dish">
+                    <div class="dish-name">Gevulde aperitiefkroketjes</div>
+                    <div class="dish-description">Krokant en romig.</div>
+                </div>
+
+                <h4 style="font-size:1em; color:#c41e3a; margin-top:12px; margin-bottom:6px;">Koude Amuses</h4>
+                <div class="dish">
+                    <div class="dish-name">Glaasje met gerookte kip en mango</div>
+                    <div class="dish-description">Gerookte kip met mango (fris).</div>
+                </div>
+
+                <!-- Caprese Spiesje removed -->
+
+                <div class="dish">
+                    <div class="dish-name">Wrap-rolletjes met Serranoham</div>
+                    <div class="dish-description">Tortilla met kruidenkaas, Serranoham en rucola.</div>
+                </div>
+
+            </div>
+
+            <div class="course">
+                <h2 class="course-title">Soep</h2>
+                <div class="dish">
+                    <div class="dish-name">Tomatenroomsoep</div>
+                    <div class="dish-description">Met een lookbroodje als side</div>
+                </div>
+            </div>
+
+            <div class="course">
+                <h2 class="course-title">Voorgerecht</h2>
+                <div class="dish">
+                    <div class="dish-name">Carpaccio</div>
+                    <div class="dish-description">Dunne plakjes rundvlees met Parmezaan, rucola en pijnboompitten</div>
+                </div>
+            </div>
+
+            <div class="course">
+                <h2 class="course-title">Hoofdgerecht</h2>
+                <div class="dish">
+                    <div class="dish-name">Reefilet met portosaus</div>
+                    <div class="dish-description">Geserveerd met warme groenjes en kroketjes</div>
+                </div>
+            </div>
+
+            <div class="course">
+                <h2 class="course-title">Dessert</h2>
+
+                <div class="dish">
+                    <div class="dish-name">Chocolademousse</div>
+                    <div class="dish-description">Met slagroom, rode vruchten en een kerstkoekje</div>
+                </div>
+
+                <div class="dish">
+                    <div class="dish-name">Dame Blanche X-mas Deluxe</div>
+                    <div class="dish-description">Vanille-ijs met warme chocoladesaus, slagroom en gemengde bessen</div>
+                </div>
+
+            </div>
+
+            <div class="drinks-section">
+                <h2 class="drinks-title">🍸 Drankmenu 🍸</h2>
+
+                <h3 style="font-size: 1.6em; color: #1a472a; margin-bottom: 20px; margin-top: 10px;">Frisdranken</h3>
+
+                <div class="drink">
+                    <div class="drink-name">Coca Cola (normaal en zero)</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Fanta</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Sprite</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Ice Tea</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Spa (rood en blauw)</div>
+                </div>
+
+                <h3 style="font-size: 1.6em; color: #1a472a; margin-bottom: 20px; margin-top: 30px;">Wijnen</h3>
+
+                <div class="drink">
+                    <div class="drink-name">Witte wijn</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Rode wijn</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">Champagne</div>
+                </div>
+
+                <h3 style="font-size: 1.6em; color: #1a472a; margin-bottom: 20px; margin-top: 30px;">Cocktails</h3>
+
+                <div class="drink">
+                    <div class="drink-name">1. The Star: Pornstar Martini</div>
+                    <div class="drink-tagline">De favoriet die niet mag ontbreken.</div>
+                    <div class="drink-ingredients"><strong>Ingrediënten:</strong> Vanille Vodka (of gewone Vodka), Passievruchtensap, Limoensap.</div>
+                    <div class="drink-special">De Twist: Serveer met een shotje Cava ernaast.</div>
+                    <div class="drink-menu">"Exotische passievrucht met vanille vodka en een feestelijk shotje bubbels."</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">2. The Fresh Classic: Mojito</div>
+                    <div class="drink-tagline">De vervanger voor de koffie. Altijd goed en lekker fris na het eten.</div>
+                    <div class="drink-ingredients"><strong>Ingrediënten:</strong> Witte Rum, veel verse Munt, Limoensap, Rietsuiker (of suikersiroop), Bruiswater.</div>
+                    <div class="drink-special">Synergie: Je hebt limoen en bruiswater toch al nodig voor de andere drankjes.</div>
+                    <div class="drink-menu">"De ultieme verfrissing: Witte rum, verse munt, limoen en bruiswater."</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">3. The Festive: Christmas Mule</div>
+                    <div class="drink-tagline">De makkelijke 'crowd pleaser'.</div>
+                    <div class="drink-ingredients"><strong>Ingrediënten:</strong> Vodka, Limoensap, Ginger Beer, Cranberrysap.</div>
+                    <div class="drink-special">Synergie: Maakt je Vodka en Limoenen op.</div>
+                    <div class="drink-menu">"Kruidig en fris: Vodka, gemberbier, limoen en veenbes."</div>
+                </div>
+
+                <div class="drink">
+                    <div class="drink-name">4. The Easy Rider: Bacardi Cola</div>
+                    <div class="drink-tagline">De klassieker voor wie het simpel en lekker houdt.</div>
+                    <div class="drink-ingredients"><strong>Ingrediënten:</strong> Bacardi (witte rum), Cola, ijsblokjes, schijfje limoen.</div>
+                    <div class="drink-special">Synergie: Maakt gebruik van de rum die je toch al hebt voor de Mojito.</div>
+                    <div class="drink-menu">"De ultieme no-nonsense mix: Bacardi rum met koude cola."</div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Prettige feestdagen en smakelijk eten! 🎅</p>
+            <div class="site-credit" style="margin-top:8px; font-size:0.9em; color:#666;">
+                <div>Met vriendelijke groeten,</div>
+                <div style="font-weight:700; color:#1a472a;">Wout De Graeve</div>
+                <div style="font-style:italic;">Website en menu samengesteld door Wout De Graeve — © 2025</div>
+            </div>
+        </footer>
+    </div>
+    <div class="christmas-trees">
+        <img src="/images/sneeuw.png" alt="Sneeuw links" class="snow-img left-snow">
+        <img src="/images/sneeuw.png" alt="Sneeuw rechts" class="snow-img right-snow">
+        <img src="/images/kerstboom.png" alt="Kerstboom links" class="tree left">
+        <img src="/images/kerstboom.png" alt="Kerstboom rechts" class="tree right">
+    </div>
+</body>
+</html>
