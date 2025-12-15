@@ -21,10 +21,11 @@
             background-attachment: fixed;
             color: #333;
             min-height: 100vh;
-            height: 100%;
-            padding: 20px;
-            padding-top: 80px;
-            overflow: hidden;
+            min-height: 100dvh;
+            padding: clamp(10px, 2vw, 20px);
+            padding-top: clamp(60px, 10vw, 80px);
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
@@ -35,12 +36,12 @@
             left: 0;
             right: 0;
             background: rgba(26, 71, 42, 0.95);
-            padding: 8px 10px;
+            padding: clamp(6px, 1.5vw, 8px) clamp(8px, 2vw, 10px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             z-index: 999;
             display: flex;
             justify-content: center;
-            gap: 6px;
+            gap: clamp(4px, 1vw, 6px);
             flex-wrap: wrap;
             backdrop-filter: blur(5px);
         }
@@ -48,9 +49,9 @@
         .nav-header a {
             color: #fff;
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: clamp(0.7em, 2vw, 0.85em);
             font-weight: bold;
-            padding: 8px 10px;
+            padding: clamp(6px, 1.5vw, 8px) clamp(8px, 2vw, 10px);
             border-radius: 5px;
             transition: background 0.3s ease;
             min-height: 44px;
@@ -175,66 +176,65 @@
         }
 
         .container {
-            max-width: 900px;
-            width: 90%;
+            max-width: min(900px, 100%);
+            width: clamp(90%, 95vw, 100%);
             margin: 0 auto;
             background: #fff;
-            padding: 40px;
+            padding: clamp(16px, 4vw, 40px);
             border-radius: 10px 10px 0 0;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            height: calc(100vh - 20px);
-            overflow-y: auto;
+            min-height: auto;
             position: relative;
             z-index: 2;
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: clamp(20px, 4vw, 40px);
             border-bottom: 3px solid #c41e3a;
-            padding-bottom: 20px;
+            padding-bottom: clamp(12px, 2vw, 20px);
         }
 
         h1 {
-            font-size: 3em;
+            font-size: clamp(1.5em, 5vw, 3em);
             color: #c41e3a;
-            margin-bottom: 10px;
+            margin-bottom: clamp(6px, 1vw, 10px);
             font-weight: normal;
             letter-spacing: 2px;
         }
 
         .subtitle {
-            font-size: 1.2em;
+            font-size: clamp(0.9em, 2.5vw, 1.2em);
             color: #1a472a;
             font-style: italic;
         }
 
         .course {
-            margin-bottom: 40px;
+            margin-bottom: clamp(20px, 4vw, 40px);
         }
 
         .course-title {
-            font-size: 1.8em;
+            font-size: clamp(1.2em, 3vw, 1.8em);
             color: #1a472a;
-            margin-bottom: 15px;
+            margin-bottom: clamp(10px, 2vw, 15px);
             border-left: 5px solid #c41e3a;
-            padding-left: 15px;
+            padding-left: clamp(10px, 2vw, 15px);
         }
 
         .dish {
-            margin-bottom: 20px;
-            padding-left: 20px;
+            margin-bottom: clamp(12px, 2vw, 20px);
+            padding-left: clamp(10px, 2vw, 20px);
         }
 
         .dish-name {
-            font-size: 1.3em;
+            font-size: clamp(1em, 2.5vw, 1.3em);
             color: #333;
             margin-bottom: 5px;
             font-weight: bold;
         }
 
         .dish-description {
-            font-size: 1em;
+            font-size: clamp(0.85em, 2vw, 1em);
             color: #666;
             line-height: 1.6;
             font-style: italic;
@@ -242,8 +242,8 @@
 
         footer {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
+            margin-top: clamp(20px, 4vw, 40px);
+            padding-top: clamp(12px, 2vw, 20px);
             border-top: 2px solid #1a472a;
             color: #666;
             font-style: italic;
@@ -251,49 +251,49 @@
 
         .decoration {
             text-align: center;
-            font-size: 2em;
-            margin: 20px 0;
+            font-size: clamp(1.2em, 3vw, 2em);
+            margin: clamp(12px, 2vw, 20px) 0;
         }
 
         .drinks-section {
-            margin-top: 50px;
-            padding-top: 30px;
+            margin-top: clamp(30px, 5vw, 50px);
+            padding-top: clamp(20px, 3vw, 30px);
             border-top: 3px solid #c41e3a;
         }
 
         .drinks-title {
-            font-size: 2.2em;
+            font-size: clamp(1.5em, 4vw, 2.2em);
             color: #c41e3a;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: clamp(20px, 3vw, 30px);
             font-weight: normal;
             letter-spacing: 1px;
         }
 
         .drink {
-            margin-bottom: 30px;
-            padding: 20px;
+            margin-bottom: clamp(16px, 3vw, 30px);
+            padding: clamp(12px, 2vw, 20px);
             background: #f9f9f9;
             border-radius: 8px;
             border-left: 4px solid #1a472a;
         }
 
         .drink-name {
-            font-size: 1.4em;
+            font-size: clamp(1.1em, 2.5vw, 1.4em);
             color: #c41e3a;
             margin-bottom: 8px;
             font-weight: bold;
         }
 
         .drink-tagline {
-            font-size: 1em;
+            font-size: clamp(0.85em, 2vw, 1em);
             color: #555;
             margin-bottom: 12px;
             font-style: italic;
         }
 
         .drink-ingredients {
-            font-size: 0.95em;
+            font-size: clamp(0.85em, 2vw, 0.95em);
             color: #666;
             margin-bottom: 10px;
             line-height: 1.5;
@@ -332,65 +332,9 @@
         
         /* Extra small devices (phones, 480px and below) */
         @media screen and (max-width: 480px) {
-            body {
-                padding: 5px;
-            }
-
             .container {
                 width: 100%;
-                padding: 12px;
                 border-radius: 0;
-                height: calc(100vh - 10px);
-            }
-
-            h1 {
-                font-size: 1.5em;
-                margin-bottom: 8px;
-            }
-
-            .subtitle {
-                font-size: 0.85em;
-            }
-
-            .course-title {
-                font-size: 1.1em;
-                margin-bottom: 10px;
-            }
-
-            .dish {
-                padding-left: 8px;
-                margin-bottom: 12px;
-            }
-
-            .dish-name {
-                font-size: 0.95em;
-                margin-bottom: 3px;
-            }
-
-            .dish-description {
-                font-size: 0.8em;
-            }
-
-            .drink {
-                padding: 10px;
-                margin-bottom: 15px;
-            }
-
-            .drink-name {
-                font-size: 1em;
-                margin-bottom: 5px;
-            }
-
-            .drink-tagline,
-            .drink-ingredients,
-            .drink-special,
-            .drink-menu {
-                font-size: 0.8em;
-            }
-
-            .decoration {
-                font-size: 1em;
-                margin: 10px 0;
             }
 
             h3, h4 {
@@ -399,28 +343,6 @@
                 margin-bottom: 10px !important;
             }
 
-            .drinks-title {
-                font-size: 1.4em;
-                margin-bottom: 15px;
-            }
-
-            header {
-                margin-bottom: 20px;
-                padding-bottom: 12px;
-                border-bottom-width: 2px;
-            }
-
-            .drinks-section {
-                margin-top: 25px;
-                padding-top: 15px;
-            }
-
-            footer {
-                margin-top: 20px;
-                padding-top: 12px;
-                font-size: 0.85em;
-            }
-            
             .santa {
                 width: 100px;
             }
@@ -428,62 +350,8 @@
 
         /* Small tablets (481px - 768px) */
         @media screen and (min-width: 481px) and (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-
             .container {
                 width: 95%;
-                padding: 20px;
-                height: calc(100vh - 20px);
-            }
-
-            h1 {
-                font-size: 2em;
-            }
-
-            .subtitle {
-                font-size: 1em;
-            }
-
-            .course-title {
-                font-size: 1.4em;
-            }
-
-            .dish-name {
-                font-size: 1.1em;
-            }
-
-            .dish-description {
-                font-size: 0.9em;
-            }
-
-            .drinks-title {
-                font-size: 1.8em;
-            }
-
-            .drink-name {
-                font-size: 1.2em;
-            }
-
-            .drink-tagline,
-            .drink-ingredients,
-            .drink-special,
-            .drink-menu {
-                font-size: 0.9em;
-            }
-
-            .decoration {
-                font-size: 1.5em;
-            }
-
-            h3, h4 {
-                font-size: 1.2em !important;
-            }
-
-            .drinks-section {
-                margin-top: 35px;
-                padding-top: 20px;
             }
             
             .santa {
@@ -493,18 +361,9 @@
 
         /* Large tablets and small laptops (769px - 1024px) */
         @media screen and (min-width: 769px) and (max-width: 1024px) {
-            body {
-                padding: 15px;
-            }
-            
             .container {
                 max-width: 750px;
                 width: 85%;
-                padding: 35px;
-            }
-            
-            h1 {
-                font-size: 2.5em;
             }
             
             .santa {
@@ -514,18 +373,9 @@
         
         /* Laptops and desktops (1025px - 1440px) */
         @media screen and (min-width: 1025px) and (max-width: 1440px) {
-            body {
-                padding: 20px;
-            }
-            
             .container {
                 max-width: 850px;
                 width: 70%;
-                padding: 40px;
-            }
-            
-            h1 {
-                font-size: 2.8em;
             }
             
             .santa {
@@ -535,38 +385,9 @@
         
         /* Large desktops and monitors (1441px and above) */
         @media screen and (min-width: 1441px) {
-            body {
-                padding: 25px;
-            }
-            
             .container {
                 max-width: 950px;
                 width: 60%;
-                padding: 50px;
-            }
-            
-            h1 {
-                font-size: 3.2em;
-            }
-            
-            .course-title {
-                font-size: 1.8em;
-            }
-            
-            .dish-name {
-                font-size: 1.4em;
-            }
-            
-            .dish-description {
-                font-size: 1.1em;
-            }
-            
-            .drinks-title {
-                font-size: 2.4em;
-            }
-            
-            .drink-name {
-                font-size: 1.5em;
             }
             
             .santa {
