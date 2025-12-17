@@ -830,6 +830,216 @@
             }
         }
         
+        /* Admin Panel Tabs */
+        .admin-tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .admin-tab {
+            flex: 1;
+            padding: 0.75rem 0.5rem;
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .admin-tab.active {
+            color: var(--color-green);
+            border-bottom-color: var(--color-green);
+        }
+
+        .admin-tab:hover:not(.active) {
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        /* Externe Settings Styles */
+        .rigging-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rigging-toggle label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ccc;
+            transition: 0.3s;
+            border-radius: 32px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background: #fff;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked + .toggle-slider {
+            background: var(--color-green);
+        }
+
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(28px);
+        }
+
+        .rigging-status {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .rigging-status.inactive {
+            background: #ffebee;
+            color: #c41e3a;
+        }
+
+        .rigging-status.active {
+            background: #e8f5e9;
+            color: var(--color-green);
+        }
+
+        .rigging-order-section {
+            display: none;
+        }
+
+        .rigging-order-section.active {
+            display: block;
+        }
+
+        .rigging-order-section h4 {
+            font-size: 0.95rem;
+            color: #333;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .rigging-order-list {
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .rigging-order-item {
+            display: flex;
+            align-items: center;
+            padding: 0.6rem 0.75rem;
+            background: #fff;
+            border-bottom: 1px solid #f0f0f0;
+            gap: 0.5rem;
+        }
+
+        .rigging-order-item:last-child {
+            border-bottom: none;
+        }
+
+        .rigging-order-item .order-number {
+            width: 24px;
+            height: 24px;
+            background: var(--color-green);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .rigging-order-item .gift-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .rigging-order-item .move-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .rigging-order-item .move-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #e0e0e0;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rigging-order-item .move-btn:hover {
+            background: #bdbdbd;
+        }
+
+        .rigging-order-item .move-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .rigging-info {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+            padding: 0.75rem;
+            background: #fff8e1;
+            border-radius: 0.5rem;
+            line-height: 1.4;
+        }
 
         .remove-button {
             min-height: 2.75rem;
@@ -1203,11 +1413,49 @@
     <!-- Admin Panel Modal -->
     <div class="admin-overlay" id="adminOverlay">
         <div class="admin-panel">
-            <h3>🎄 Cadeaus Beheren</h3>
-            <div class="admin-gifts-list" id="adminGiftsList"></div>
-            <div class="admin-buttons">
-                <button class="admin-btn save" id="adminSave">✓ Opslaan</button>
-                <button class="admin-btn cancel" id="adminCancel">✗ Annuleren</button>
+            <h3>🎄 Instellingen</h3>
+            
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-tab="cadeaus">🎁 Cadeaus</button>
+                <button class="admin-tab" data-tab="externe">⚙️ Externe</button>
+            </div>
+            
+            <!-- Tab 1: Cadeaus Beheren -->
+            <div class="admin-tab-content active" id="tabCadeaus">
+                <div class="admin-gifts-list" id="adminGiftsList"></div>
+                <div class="admin-buttons">
+                    <button class="admin-btn save" id="adminSave">✓ Opslaan</button>
+                    <button class="admin-btn cancel" id="adminCancel">✗ Annuleren</button>
+                </div>
+            </div>
+            
+            <!-- Tab 2: Externe Settings -->
+            <div class="admin-tab-content" id="tabExterne">
+                <div class="rigging-toggle">
+                    <span>Volgorde Riggen</span>
+                    <label class="toggle-switch" for="riggingToggle">
+                        <input type="checkbox" id="riggingToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="rigging-status inactive" id="riggingStatus">
+                    ❌ Rigging uitgeschakeld - Wiel is willekeurig
+                </div>
+                
+                <div class="rigging-order-section" id="riggingOrderSection">
+                    <h4>📋 Bepaal de volgorde van cadeaus:</h4>
+                    <div class="rigging-order-list" id="riggingOrderList"></div>
+                    <div class="rigging-info">
+                        💡 Het eerste beschikbare cadeau in de lijst wordt gekozen bij de volgende spin.
+                    </div>
+                </div>
+                
+                <div class="admin-buttons" style="margin-top: 1rem;">
+                    <button class="admin-btn save" id="externeSave">✓ Opslaan</button>
+                    <button class="admin-btn cancel" id="externeCancel">✗ Annuleren</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1262,6 +1510,10 @@
         let isSpinning = false;
         let lastSelectedGift = null;
         let availableGifts = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Indices van beschikbare cadeaus
+        
+        // Rigging state
+        let isRiggingEnabled = false;
+        let riggedOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // Volgorde voor rigging
         
         const gifts = [
             '🎁 Cadeau 1',
@@ -1450,6 +1702,169 @@
             }
         });
 
+        // =====================================================
+        // ADMIN TABS FUNCTIONALITEIT
+        // =====================================================
+        const adminTabs = document.querySelectorAll('.admin-tab');
+        const tabContents = document.querySelectorAll('.admin-tab-content');
+        
+        adminTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.dataset.tab;
+                
+                // Update active tab
+                adminTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update active content
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === 'tab' + targetTab.charAt(0).toUpperCase() + targetTab.slice(1)) {
+                        content.classList.add('active');
+                    }
+                });
+                
+                // Render rigging list when switching to externe tab
+                if (targetTab === 'externe') {
+                    renderRiggingList();
+                }
+            });
+        });
+
+        // =====================================================
+        // EXTERNE SETTINGS / RIGGING FUNCTIONALITEIT
+        // =====================================================
+        const riggingToggle = document.getElementById('riggingToggle');
+        const riggingStatus = document.getElementById('riggingStatus');
+        const riggingOrderSection = document.getElementById('riggingOrderSection');
+        const riggingOrderList = document.getElementById('riggingOrderList');
+        const externeSave = document.getElementById('externeSave');
+        const externeCancel = document.getElementById('externeCancel');
+        
+        let tempRiggedOrder = [...riggedOrder];
+        let tempRiggingEnabled = isRiggingEnabled;
+        
+        function renderRiggingList() {
+            riggingOrderList.innerHTML = '';
+            tempRiggedOrder = [...riggedOrder];
+            tempRiggingEnabled = isRiggingEnabled;
+            riggingToggle.checked = isRiggingEnabled;
+            updateRiggingUI();
+            
+            tempRiggedOrder.forEach((giftIndex, position) => {
+                const item = document.createElement('div');
+                item.className = 'rigging-order-item';
+                item.dataset.giftIndex = giftIndex;
+                
+                const isAvailable = availableGifts.includes(giftIndex);
+                if (!isAvailable) {
+                    item.style.opacity = '0.5';
+                    item.style.textDecoration = 'line-through';
+                }
+                
+                item.innerHTML = `
+                    <span class="order-number">${position + 1}</span>
+                    <span class="gift-name">${gifts[giftIndex]}${!isAvailable ? ' (getrokken)' : ''}</span>
+                    <div class="move-buttons">
+                        <button class="move-btn" data-dir="up" ${position === 0 ? 'disabled' : ''}>▲</button>
+                        <button class="move-btn" data-dir="down" ${position === tempRiggedOrder.length - 1 ? 'disabled' : ''}>▼</button>
+                    </div>
+                `;
+                
+                // Move button handlers
+                item.querySelectorAll('.move-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const dir = this.dataset.dir;
+                        const currentPos = tempRiggedOrder.indexOf(giftIndex);
+                        
+                        if (dir === 'up' && currentPos > 0) {
+                            [tempRiggedOrder[currentPos], tempRiggedOrder[currentPos - 1]] = 
+                            [tempRiggedOrder[currentPos - 1], tempRiggedOrder[currentPos]];
+                        } else if (dir === 'down' && currentPos < tempRiggedOrder.length - 1) {
+                            [tempRiggedOrder[currentPos], tempRiggedOrder[currentPos + 1]] = 
+                            [tempRiggedOrder[currentPos + 1], tempRiggedOrder[currentPos]];
+                        }
+                        
+                        renderRiggingListItems();
+                    });
+                });
+                
+                riggingOrderList.appendChild(item);
+            });
+        }
+        
+        function renderRiggingListItems() {
+            riggingOrderList.innerHTML = '';
+            
+            tempRiggedOrder.forEach((giftIndex, position) => {
+                const item = document.createElement('div');
+                item.className = 'rigging-order-item';
+                item.dataset.giftIndex = giftIndex;
+                
+                const isAvailable = availableGifts.includes(giftIndex);
+                if (!isAvailable) {
+                    item.style.opacity = '0.5';
+                    item.style.textDecoration = 'line-through';
+                }
+                
+                item.innerHTML = `
+                    <span class="order-number">${position + 1}</span>
+                    <span class="gift-name">${gifts[giftIndex]}${!isAvailable ? ' (getrokken)' : ''}</span>
+                    <div class="move-buttons">
+                        <button class="move-btn" data-dir="up" ${position === 0 ? 'disabled' : ''}>▲</button>
+                        <button class="move-btn" data-dir="down" ${position === tempRiggedOrder.length - 1 ? 'disabled' : ''}>▼</button>
+                    </div>
+                `;
+                
+                // Move button handlers
+                item.querySelectorAll('.move-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const dir = this.dataset.dir;
+                        const currentPos = tempRiggedOrder.indexOf(giftIndex);
+                        
+                        if (dir === 'up' && currentPos > 0) {
+                            [tempRiggedOrder[currentPos], tempRiggedOrder[currentPos - 1]] = 
+                            [tempRiggedOrder[currentPos - 1], tempRiggedOrder[currentPos]];
+                        } else if (dir === 'down' && currentPos < tempRiggedOrder.length - 1) {
+                            [tempRiggedOrder[currentPos], tempRiggedOrder[currentPos + 1]] = 
+                            [tempRiggedOrder[currentPos + 1], tempRiggedOrder[currentPos]];
+                        }
+                        
+                        renderRiggingListItems();
+                    });
+                });
+                
+                riggingOrderList.appendChild(item);
+            });
+        }
+        
+        function updateRiggingUI() {
+            if (tempRiggingEnabled) {
+                riggingStatus.className = 'rigging-status active';
+                riggingStatus.innerHTML = '✅ Rigging geactiveerd - Volgorde bepaald';
+                riggingOrderSection.classList.add('active');
+            } else {
+                riggingStatus.className = 'rigging-status inactive';
+                riggingStatus.innerHTML = '❌ Rigging uitgeschakeld - Wiel is willekeurig';
+                riggingOrderSection.classList.remove('active');
+            }
+        }
+        
+        riggingToggle.addEventListener('change', function() {
+            tempRiggingEnabled = this.checked;
+            updateRiggingUI();
+        });
+        
+        externeSave.addEventListener('click', function() {
+            isRiggingEnabled = tempRiggingEnabled;
+            riggedOrder = [...tempRiggedOrder];
+            closeAdminPanel();
+        });
+        
+        externeCancel.addEventListener('click', closeAdminPanel);
+
         function showPopup(giftName) {
             popupMessage.textContent = `Je mag ${giftName} openen!`;
             popupOverlay.classList.add('show');
@@ -1506,9 +1921,34 @@
             
             // Random aantal rotaties (minimaal 7, maximaal 12 voor langere spin)
             const spins = Math.floor(Math.random() * 5) + 7;
-            // Random cadeau uit beschikbare cadeaus (index in de array)
-            const randomIndex = Math.floor(Math.random() * availableGifts.length);
-            const selectedGift = availableGifts[randomIndex];
+            
+            // Bepaal welk cadeau geselecteerd wordt
+            let selectedGift;
+            let randomIndex;
+            
+            if (isRiggingEnabled) {
+                // RIGGING: Zoek het eerste cadeau uit riggedOrder dat nog beschikbaar is
+                selectedGift = null;
+                for (let i = 0; i < riggedOrder.length; i++) {
+                    if (availableGifts.includes(riggedOrder[i])) {
+                        selectedGift = riggedOrder[i];
+                        break;
+                    }
+                }
+                // Fallback als geen rigged cadeau beschikbaar is
+                if (selectedGift === null) {
+                    randomIndex = Math.floor(Math.random() * availableGifts.length);
+                    selectedGift = availableGifts[randomIndex];
+                } else {
+                    // Vind de positie van dit cadeau op het huidige rad
+                    randomIndex = availableGifts.indexOf(selectedGift);
+                }
+            } else {
+                // Random cadeau uit beschikbare cadeaus (index in de array)
+                randomIndex = Math.floor(Math.random() * availableGifts.length);
+                selectedGift = availableGifts[randomIndex];
+            }
+            
             lastSelectedGift = selectedGift;
             
             // DYNAMISCHE hoekberekening: segmentgrootte hangt af van aantal beschikbare cadeaus
