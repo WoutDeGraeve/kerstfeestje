@@ -1144,13 +1144,23 @@
         }
         createStars();
 
+        // Function to get global volume from parent (for Santa sound)
+        function getGlobalVolumeForSanta() {
+            try {
+                if (window.parent !== window && typeof window.parent.globalVolume !== 'undefined') {
+                    return window.parent.globalVolume;
+                }
+            } catch (e) {}
+            return 0.7;
+        }
+
         // Santa click sound on gifts page
         const flyingSantaGifts = document.getElementById('flyingSantaGifts');
         const santaSoundGifts = document.getElementById('santaSoundGifts');
         if (flyingSantaGifts && santaSoundGifts) {
-            santaSoundGifts.volume = 0.6;
             flyingSantaGifts.addEventListener('click', function(e) {
                 e.stopPropagation();
+                santaSoundGifts.volume = getGlobalVolumeForSanta() * 0.85;
                 santaSoundGifts.currentTime = 0;
                 santaSoundGifts.play().catch(err => console.log('Santa sound failed:', err));
             });
@@ -1210,8 +1220,29 @@
         // Audio references
         const spinSound = document.getElementById('spinSound');
         const cheerSound = document.getElementById('cheerSound');
-        spinSound.volume = 0.5;
-        cheerSound.volume = 0.6;
+        
+        // Function to get global volume from parent (or use default)
+        function getGlobalVolume() {
+            try {
+                if (window.parent !== window && typeof window.parent.globalVolume !== 'undefined') {
+                    return window.parent.globalVolume;
+                }
+            } catch (e) {}
+            return 0.7; // default volume
+        }
+        
+        // Update sound effect volumes based on global volume
+        function updateSoundVolumes() {
+            const globalVol = getGlobalVolume();
+            spinSound.volume = globalVol * 0.7;  // 70% of global volume
+            cheerSound.volume = globalVol * 0.85; // 85% of global volume
+        }
+        
+        // Initial volume setup
+        updateSoundVolumes();
+        
+        // Listen for volume changes from parent
+        setInterval(updateSoundVolumes, 500);
         
         // Bereken spin duration op basis van audio lengte (minus 2.5 seconde voor kortere sync)
         let spinDuration = 4.5; // default 4.5 seconden

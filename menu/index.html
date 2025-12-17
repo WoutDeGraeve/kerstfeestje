@@ -517,15 +517,25 @@
     <audio id="santaSound" src="../audio/🎅 Free Santa Sound Effect _ _Ho Ho Ho Merry Christmas_ 🎅.mp3" preload="auto"></audio>
     
     <script>
+        // Function to get global volume from parent (or use default)
+        function getGlobalVolume() {
+            try {
+                if (window.parent !== window && typeof window.parent.globalVolume !== 'undefined') {
+                    return window.parent.globalVolume;
+                }
+            } catch (e) {}
+            return 0.7; // default volume
+        }
+        
         // Kerstman geluid afspelen bij klikken
         const flyingSanta = document.getElementById('flyingSanta');
         const santaSound = document.getElementById('santaSound');
-        santaSound.volume = 0.6;
         
         flyingSanta.style.cursor = 'pointer';
         flyingSanta.style.pointerEvents = 'auto'; // Zorg dat klikken werkt
         flyingSanta.addEventListener('click', function(e) {
             e.preventDefault();
+            santaSound.volume = getGlobalVolume() * 0.85;
             santaSound.currentTime = 0;
             santaSound.play().catch(err => console.log('Santa sound failed:', err));
         });

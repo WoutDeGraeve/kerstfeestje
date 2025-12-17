@@ -495,8 +495,19 @@
             toggle: togglePlay,
             getCurrentIndex: () => currentSongIndex,
             isPlaying: () => isPlaying,
-            getSongs: () => songs
+            getSongs: () => songs,
+            setVolume: (vol) => {
+                audioPlayer.volume = vol;
+                volumeSlider.value = vol * 100;
+                volumeIcon.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+                // Also update global volume for sound effects
+                window.globalVolume = vol;
+            },
+            getVolume: () => audioPlayer.volume
         };
+        
+        // Global volume for sound effects (accessible by iframes)
+        window.globalVolume = 0.7;
 
         // Event listeners
         playBtn.addEventListener('click', togglePlay);
@@ -514,8 +525,11 @@
         });
 
         volumeSlider.addEventListener('input', (e) => {
-            audioPlayer.volume = e.target.value / 100;
-            volumeIcon.textContent = e.target.value == 0 ? '🔇' : e.target.value < 50 ? '🔉' : '🔊';
+            const vol = e.target.value / 100;
+            audioPlayer.volume = vol;
+            volumeIcon.textContent = vol == 0 ? '🔇' : vol < 0.5 ? '🔉' : '🔊';
+            // Update global volume for sound effects
+            window.globalVolume = vol;
         });
 
         progressBar.addEventListener('click', seek);
